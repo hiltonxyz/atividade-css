@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quer casar comigo?</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #3498db;
+      color: white;
+      text-align: center;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 40px;
+      position: relative;
+    }
+
+    button {
+      padding: 15px 40px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #sim {
+      background-color: #2ecc71;
+      color: black;
+    }
+
+    #nao {
+      background-color: #e74c3c;
+      color: black;
+      position: absolute;
+    }
+
+    #mensagem {
+      margin-top: 40px;
+      font-size: 28px;
+      color: #2ecc71;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quer casar comigo?</h1>
+
+  <div class="buttons">
+    <button id="sim">Sim</button>
+    <button id="nao">Não</button>
+  </div>
+
+  <div id="mensagem"></div>
+
+  <script>
+    const btnSim = document.getElementById('sim');
+    const btnNao = document.getElementById('nao');
+    const mensagem = document.getElementById('mensagem');
+
+    btnSim.addEventListener('click', () => {
+      mensagem.textContent = 'Sabia que diria sim! ❤️';
+    });
+
+    btnNao.addEventListener('mouseover', () => {
+      const x = Math.random() * (window.innerWidth - btnNao.offsetWidth);
+      const y = Math.random() * (window.innerHeight - btnNao.offsetHeight - 50); // 50 para evitar o texto
+      btnNao.style.left = `${x}px`;
+      btnNao.style.top = `${y}px`;
+    });
+  </script>
+</body>
+</html>
