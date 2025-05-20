@@ -1,88 +1,167 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quer casar comigo?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #3498db;
-      color: white;
-      text-align: center;
-      height: 100vh;
+      font-family: 'Dancing Script', cursive;
+      background: linear-gradient(135deg, #ffd6e0, #fff0f6);
       overflow: hidden;
+    }
+
+    .container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      z-index: 2;
+      text-align: center;
+      padding: 20px;
     }
 
     h1 {
-      font-size: 36px;
-      margin-bottom: 40px;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 40px;
-      position: relative;
+      font-size: 4em;
+      color: #c2185b;
+      margin-bottom: 50px;
+      text-shadow: 2px 2px 4px #fff;
     }
 
     button {
-      padding: 15px 40px;
-      font-size: 20px;
+      font-size: 1.8em;
+      padding: 15px 50px;
+      margin: 15px;
       border: none;
-      border-radius: 10px;
+      border-radius: 40px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: transform 0.2s, background 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    button:hover {
+      transform: scale(1.1);
     }
 
     #sim {
-      background-color: #2ecc71;
-      color: black;
+      background-color: #66bb6a;
+      color: white;
     }
 
     #nao {
-      background-color: #e74c3c;
-      color: black;
+      background-color: #ef5350;
+      color: white;
       position: absolute;
     }
 
-    #mensagem {
-      margin-top: 40px;
-      font-size: 28px;
-      color: #2ecc71;
+    .emoji {
+      position: absolute;
+      font-size: 24px;
+      animation: flutuar 8s linear infinite;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes flutuar {
+      0% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+      40% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
+    }
+
+    #final {
+      display: none;
+      flex-direction: column;
+      background: linear-gradient(135deg, #fce4ec, #fff8f9);
+    }
+
+    #mensagem-final {
+      font-size: 3em;
+      color: #ad1457;
+      padding: 20px;
+      text-shadow: 1px 1px 3px #fff;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5em;
+      }
+
+      #mensagem-final {
+        font-size: 2em;
+      }
+
+      button {
+        font-size: 1.4em;
+        padding: 12px 30px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Quer casar comigo?</h1>
 
-  <div class="buttons">
-    <button id="sim">Sim</button>
-    <button id="nao">Não</button>
-  </div>
+<div class="container" id="inicio">
+  <h1>Quer casar comigo? 💍</h1>
+  <button id="sim">Sim 💖</button>
+  <button id="nao">Não 😱</button>
+</div>
 
-  <div id="mensagem"></div>
+<div class="container" id="final">
+  <h1 id="mensagem-final">Eu sabia! 💘<br>Você é o amor da minha vida!<br>Vamos ser felizes para sempre! 💑</h1>
+</div>
 
-  <script>
-    const btnSim = document.getElementById('sim');
-    const btnNao = document.getElementById('nao');
-    const mensagem = document.getElementById('mensagem');
+<script>
+  const btnSim = document.getElementById('sim');
+  const btnNao = document.getElementById('nao');
+  const telaInicio = document.getElementById('inicio');
+  const telaFinal = document.getElementById('final');
 
-    btnSim.addEventListener('click', () => {
-      mensagem.textContent = 'Sabia que diria sim! ❤️';
-    });
+  btnSim.addEventListener('click', () => {
+    telaInicio.style.display = 'none';
+    telaFinal.style.display = 'flex';
+  });
 
-    btnNao.addEventListener('mouseover', () => {
-      const x = Math.random() * (window.innerWidth - btnNao.offsetWidth);
-      const y = Math.random() * (window.innerHeight - btnNao.offsetHeight - 50); // 50 para evitar o texto
-      btnNao.style.left = `${x}px`;
-      btnNao.style.top = `${y}px`;
-    });
-  </script>
+  document.addEventListener('mousemove', (e) => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    const btnRect = btnNao.getBoundingClientRect();
+    const distancia = Math.hypot(mouseX - btnRect.left, mouseY - btnRect.top);
+
+    if (distancia < 100) {
+      const maxX = window.innerWidth - btnNao.offsetWidth;
+      const maxY = window.innerHeight - btnNao.offsetHeight;
+      const newX = Math.random() * maxX;
+      const newY = Math.random() * maxY;
+      btnNao.style.left = `${newX}px`;
+      btnNao.style.top = `${newY}px`;
+    }
+  });
+
+  function criarEmoji() {
+    const emoji = document.createElement('div');
+    emoji.classList.add('emoji');
+    emoji.textContent = Math.random() > 0.5 ? '❤️' : '🌸';
+    emoji.style.left = `${Math.random() * 100}vw`;
+    emoji.style.fontSize = `${Math.random() * 24 + 16}px`;
+    document.body.appendChild(emoji);
+
+    setTimeout(() => emoji.remove(), 8000);
+  }
+
+  setInterval(criarEmoji, 250);
+</script>
+
 </body>
 </html>
