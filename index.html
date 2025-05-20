@@ -104,30 +104,55 @@
   </div>
 
   <script>
-    const noBtn = document.getElementById('no');
-    const yesBtn = document.getElementById('yes');
-    const questionScreen = document.getElementById('question-screen');
-    const finalScreen = document.getElementById('final-screen');
+  const noBtn = document.getElementById('no');
+  const yesBtn = document.getElementById('yes');
+  const questionScreen = document.getElementById('question-screen');
+  const finalScreen = document.getElementById('final-screen');
 
-    // Fazer o botão "Não" fugir
-    document.addEventListener('mousemove', (e) => {
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-      const rect = noBtn.getBoundingClientRect();
-      const distance = Math.hypot(mouseX - rect.left, mouseY - rect.top);
+  // Função para mover o botão "Não" aleatoriamente dentro da tela
+  function moveNoButton() {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
 
-      if (distance < 120) {
-        const newX = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-        const newY = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-        noBtn.style.left = `${newX}px`;
-        noBtn.style.top = `${newY}px`;
-      }
-    });
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
 
-    yesBtn.addEventListener('click', () => {
-      questionScreen.style.display = 'none';
-      finalScreen.style.display = 'block';
-    });
-  </script>
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+
+    noBtn.style.left = `${newX}px`;
+    noBtn.style.top = `${newY}px`;
+  }
+
+  // Verifica a proximidade do cursor do mouse
+  function handleMouseMove(e) {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    const rect = noBtn.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distance = Math.hypot(mouseX - centerX, mouseY - centerY);
+
+    if (distance < 120) {
+      moveNoButton();
+    }
+  }
+
+  // Faz o botão fugir ao tentar tocar no celular
+  function handleTouchStart(e) {
+    moveNoButton();
+  }
+
+  // Quando clica no "Sim"
+  yesBtn.addEventListener('click', () => {
+    questionScreen.style.display = 'none';
+    finalScreen.style.display = 'block';
+  });
+
+  // Eventos
+  document.addEventListener('mousemove', handleMouseMove);
+  noBtn.addEventListener('touchstart', handleTouchStart);
+</script>
+
 </body>
 </html>
